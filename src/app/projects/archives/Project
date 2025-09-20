@@ -1,0 +1,72 @@
+{
+  "name": "Project",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "프로젝트 제목"
+    },
+    "description": {
+      "type": "string",
+      "description": "프로젝트 설명"
+    },
+    "detailed_description": {
+      "type": "string",
+      "description": "상세 프로젝트 설명"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "AI/ML",
+        "해커톤",
+        "하드웨어",
+        "웹/앱",
+        "데이터분석"
+      ],
+      "description": "프로젝트 카테고리"
+    },
+    "tech_stack": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "사용된 기술 스택"
+    },
+    "team_size": {
+      "type": "number",
+      "description": "팀 규모"
+    },
+    "duration": {
+      "type": "string",
+      "description": "프로젝트 진행 기간"
+    },
+    "achievements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "성과 및 수상 내역"
+    },
+    "image_url": {
+      "type": "string",
+      "description": "프로젝트 대표 이미지"
+    },
+    "github_url": {
+      "type": "string",
+      "description": "깃허브 저장소 링크"
+    },
+    "demo_url": {
+      "type": "string",
+      "description": "데모 사이트 링크"
+    },
+    "semester": {
+      "type": "string",
+      "description": "진행 학기"
+    }
+  },
+  "required": [
+    "title",
+    "description",
+    "category"
+  ]
+}
