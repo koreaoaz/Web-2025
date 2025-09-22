@@ -1,0 +1,27 @@
+name: Forwarding-push
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  self_repush:
+    if: github.actor != 'koreaoaz'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.PUSH_TOKEN }}
+
+    - name: Add meaningless newline
+      run: |
+        git config user.name "oaz"
+        git config user.email "koreaoaz@gmail.com"
+        git pull --rebase
+        echo "" >> Forwarding_patch.txt
+        git add Forwarding_patch.txt
+        git commit -m "[Forwarding push]"
+        git push https://koreaoaz:${{ secrets.PUSH_TOKEN }}@github.com/koreaoaz/Web-2025.git HEAD:main
