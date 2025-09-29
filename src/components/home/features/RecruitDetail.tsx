@@ -1,183 +1,95 @@
 "use client";
 
-import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { ChevronDown, ChevronUp, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import Image from "next/image";
+import RecruitDetail from "./RecruitDetail";
 import Link from "next/link";
 
-function RightImageCard({
-  href,
-  src,
-  alt,
-  label,
-}: {
-  href: string;
-  src: string;
-  alt: string;
-  label: string;
-}) {
+export default function HomePage() {
   return (
-    <Link href={href} className="block group" aria-label={label}>
-      <div className="relative h-48 rounded-xl overflow-hidden border bg-gray-100">
-        <Image
-          src={src}
-          alt={alt}
-          fill
-          sizes="(min-width:1024px) 384px, 100vw"
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
-          priority={false}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-        <div className="absolute inset-0 flex items-end justify-center pb-4">
-          <span className="inline-flex items-center rounded-md bg-white/90 px-3 py-1.5 text-sm font-medium shadow-sm group-hover:bg-white">
-            {label}
-          </span>
+    <main className="bg-gray-50 min-h-screen">
+      {/* Hero Section */}
+      <section className="relative bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-24">
+        <div className="max-w-5xl mx-auto text-center px-6">
+          <h1 className="text-4xl md:text-6xl font-bold mb-4">
+            하나와영 학회
+          </h1>
+          <p className="text-lg md:text-xl mb-6">
+            고려대학교 전기전자공학부 소프트웨어 학회 <br />
+            함께 배우고 성장하는 개발자 커뮤니티
+          </p>
+          <div className="flex justify-center gap-4">
+            <Button asChild size="lg" className="bg-white text-indigo-600 hover:bg-gray-100">
+              <Link href="#recruit">지원하기</Link>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="text-white border-white hover:bg-white/20">
+              <Link href="#activities">지난 활동 보기</Link>
+            </Button>
+          </div>
         </div>
-      </div>
-    </Link>
-  );
-}
+      </section>
 
-type Props = { formUrl: string };
-
-export default function RecruitDetail({ formUrl }: Props) {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <section className="mx-auto max-w-7xl">
-      <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6">
-        <Card className="bg-white/60 backdrop-blur-sm border-gray-200">
-          <CardContent className="p-6">
-
-            <h3 className="text-2xl font-bold mb-4">하나와영 25-2 학회원 모집 일정</h3>
-
-            <div className="space-y-2">
-                <p>고려대학교 전기전자공학부 소프트웨어 학회 하나와영(One and Zero)에서 신입 학회원을 모집합니다!</p>
-            </div>
-            <div className="space-y-2 text-gray-700"></div>
-            <div className="space-y-2 text-gray-700">
-              <p><span className="font-semibold">모집 기간</span> : 2025.08.29 - 2025.09.11</p>
-              <p className="flex items-center gap-2">
-                <span className="font-semibold">구글 폼 링크</span> :
-                <a href={formUrl} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">
-                  {formUrl}
-                </a>
-              </p>
-            </div>
-
-            <div className="mt-6 space-y-2 text-gray-800">
-              <p className="font-semibold">🧑‍💻 이런 분들께 추천 드립니다</p>
-              <ul className="list-disc pl-5 space-y-1">
-                <li>코딩과 소프트웨어에 관심이 있고 함께 배우며 성장하고 싶은 분</li>
-                <li>새로운 아이디어를 함께 실현할 팀원을 찾는 분</li>
-                <li>코딩을 이제 시작하지만 열정적으로 배우고 싶은 분</li>
-                <li>소프트웨어 관련 프로젝트와 대회에 도전하고 싶은 분</li>
-              </ul>
-            </div>
-    
-            <div className="pt-6 text-gray-800 leading-relaxed space-y-4">
-                <div>
-                    <p className="font-semibold">✨ 하나와영 활동 소개</p>
-                    <p>학기 중 최소 1개 이상의 스터디 참여를 권장하며, 원하는 주제로 스터디를 직접 개설할 수도 있습니다.</p>
-                        <ul className="list-disc pl-5 space-y-2">
-                        <p className="font-semibold">[지난 학기 운영 스터디]</p>
-                        <ul className="list-disc pl-5 space-y-1">
-                            <li>언어 스터디 : Java 기초, C 언어 기초·중급, Python</li>
-                            <li>인공지능 스터디 : 자연어처리 입문, AI 논문, 강화학습</li>
-                            <li>기타 : flutter, 데이터 분석 기초, 언리얼</li>
-                        </ul>
-                        <p className="font-semibold">[지난 학기 주요 활동]</p>
-                        <ul className="list-disc pl-5 space-y-1">
-                          <li>하나와영 홈커밍데이</li>
-                          <li>여름 MT</li>
-                          <li>학회 웹사이트 구축</li>
-                        </ul>
-                    </ul>
-                </div>
-
-                <div>
-                    <p className="font-semibold">✨ 이번 학기 예정 스터디</p>
-                    <li>Python</li>
-                    <li>딥러닝 스터디</li>
-                    <li>웹사이트 생성 프로젝트 (프론트엔드, 디자인)</li>
-                    <li>게임개발 프로젝트</li>
-                    <li>* 위 스터디는 추후 사정에 따라 변경, 추가될 수 있습니다.</li>
-                </div>
-
-                <div>
-                    <p className="font-semibold">📅 모집 일정</p>
-                    <ul className="list-disc pl-5 space-y-1">
-                        <li>2025.09.11(목) 11:59pm : 지원서 제출 마감</li>
-                        <li>2025.09.13(토) : 합격자 발표</li>
-                        <li>2025.09.15(월) : 개강 총회</li>
-                    </ul>
-                </div>
-
-                <div>
-                    <p className="font-semibold">📝 신청 링크</p>
-                    <a href={formUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-blue-600 hover:underline">
-                        {formUrl} <ExternalLink className="w-4 h-4" />
-                    </a>
-                </div>
-
-                <div>
-                    <p className="font-semibold">❓ FAQ</p>
-                    <ul className="list-disc pl-5 space-y-1">
-                        <li>신입생, 복학생, 휴학생, 고학번도 지원 가능한가요?</li>
-                        <p>   : 열심히 참여할 의지와 열정 있는 분들이면 누구나 환영입니다!</p>
-                        <li>전공이 전전이 아닌데 괜찮은가요?</li>
-                        <p>   : 전기전자 전공이 아닌 분들도 참여하실 수 있으니 걱정 말고 지원하세요!</p>
-                        <li>코딩을 해본 적이 아예 없는데 참여할 수 있나요?</li>
-                        <p>   : 경험이 있다면 더 수월하겠지만 새롭게 시작하더라도 괜찮습니다. 본인의 열정만 있다면 함께 공부할 동료들이 있습니다!</p>
-                    </ul>
-                </div>
-
-                <div>
-                    <p className="font-semibold">📞 기타 궁금한 사항은 편하게 문의주세요 📞</p>
-                    <p>회장 박지우 (010-2864-0604)</p>
-                    <p>QnA 오픈 채팅방 : https://open.kakao.com/o/sQdAzFih</p>
-                </div>
-            </div>
-
-            {/* <div className="mt-4">
-              <Button variant="outline" onClick={() => setOpen(v => !v)} className="w-full justify-center">
-                {open ? <>전문 접기 <ChevronUp className="ml-1 w-4 h-4" /></> : <>전문 보기 <ChevronDown className="ml-1 w-4 h-4" /></>}
-              </Button>
-            </div>
-
-            <AnimatePresence initial={false}>
-              {open && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.35 }}
-                  className="overflow-hidden"
-                >
-                </motion.div>
-              )}
-            </AnimatePresence> */}
-          </CardContent>
-        </Card>
-
-        <div className="space-y-6">
-        <RightImageCard
-            href="/studies/overview"
-            src="/oaz_logo.png"
-            alt="지난 학기 스터디 활동 이미지"
-            label="&lt;지난 학기 스터디 보기&gt;"
-        />
-        <RightImageCard
-            href="/events/archive"
-            src="/oaz_homecomming.jpg"
-            alt="지난 학기 행사/활동 이미지"
-            label="&lt;지난 학기 활동 보기&gt;"
-        />
+      {/* About Section */}
+      <section className="py-16 max-w-5xl mx-auto px-6 text-center">
+        <h2 className="text-3xl font-bold mb-6">🚀 우리는 이런 학회입니다</h2>
+        <p className="text-gray-700 mb-8">
+          하나와영은 코딩에 관심 있는 학우들이 모여 함께 배우고,
+          프로젝트를 만들고, 대회에 도전하며 성장하는 학회입니다.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Card>
+            <CardContent className="p-6">
+              <h3 className="text-xl font-semibold mb-2">스터디 중심</h3>
+              <p className="text-gray-600">다양한 프로그래밍 언어, AI, 웹, 게임개발 스터디 운영</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-6">
+              <h3 className="text-xl font-semibold mb-2">프로젝트</h3>
+              <p className="text-gray-600">팀을 꾸려 함께 웹, 앱, 게임 등 창의적인 결과물 제작</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-6">
+              <h3 className="text-xl font-semibold mb-2">커뮤니티</h3>
+              <p className="text-gray-600">MT, 홈커밍데이, 세미나 등 다양한 네트워킹 활동</p>
+            </CardContent>
+          </Card>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* Recruitment Section */}
+      <section id="recruit" className="py-16 bg-gray-100 px-6">
+        <RecruitDetail formUrl="https://forms.gle/your-form-url" />
+      </section>
+
+      {/* Activities Section */}
+      <section id="activities" className="py-16 max-w-5xl mx-auto px-6">
+        <h2 className="text-3xl font-bold mb-6 text-center">📸 지난 활동과 스터디</h2>
+        <p className="text-gray-700 text-center mb-10">
+          다양한 활동으로 학회원들이 함께 성장하고 교류합니다.
+        </p>
+        {/* RecruitDetail 안에 있는 RightImageCard 두 개가 이미 활동/스터디 소개 카드 */}
+      </section>
+
+      {/* Contact Section */}
+      <section className="bg-indigo-600 text-white py-12">
+        <div className="max-w-3xl mx-auto text-center space-y-4">
+          <h2 className="text-2xl font-bold">📞 문의하기</h2>
+          <p>회장 박지우 (010-2864-0604)</p>
+          <p>
+            QnA 오픈 채팅방:{" "}
+            <a
+              href="https://open.kakao.com/o/sQdAzFih"
+              target="_blank"
+              rel="noreferrer"
+              className="underline font-semibold"
+            >
+              바로가기
+            </a>
+          </p>
+        </div>
+      </section>
+    </main>
   );
 }
