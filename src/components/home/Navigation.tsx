@@ -122,7 +122,7 @@ export default function Navigation() {
       href: '/studies/records',
       subItems: [
         { name: 'Overview', href: '/studies/overview' },
-        { name: 'Study Records***', href: '/studies/records' },
+        { name: 'Study Records&&', href: '/studies/records' },
         { name: 'Schedule', href: '/studies/schedule' },
       ],
     },
