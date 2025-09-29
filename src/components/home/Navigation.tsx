@@ -4,24 +4,25 @@ import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Github, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { supabase } from '@/lib/supabaseClient';
+import { supabase } from "@/lib/supabaseClient";
 import Link from "next/link";
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [openMobileMenus, setOpenMobileMenus] = useState<{ [key: string]: boolean }>({});
+  const [openMobileMenus, setOpenMobileMenus] = useState<{
+    [key: string]: boolean;
+  }>({});
   const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
   const hoverTimer = useRef<NodeJS.Timeout | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isSupervisor, setIsSupervisor] = useState(false);
-  
 
   const handleGithubLogin = async () => {
     await supabase.auth.signInWithOAuth({
-      provider: 'github',
+      provider: "github",
       options: {
-        redirectTo: 'https://www.oazkorea.co.kr/login_callback',
+        redirectTo: "https://www.oazkorea.co.kr/login_callback",
       },
     });
   };
@@ -33,41 +34,43 @@ export default function Navigation() {
 
   useEffect(() => {
     const checkUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       setIsLoggedIn(!!user);
 
+      if (user) {
+        // supervisor_id 테이블 확인
+        const { data, error } = await supabase
+          .from("supervisor_id")
+          .select("uuid")
+          .eq("uuid", user.id)
+          .maybeSingle();
 
-    if (user) {
-      // supervisor_id 테이블 확인
-      const { data, error} = await supabase
-        .from("supervisor_id")
-        .select("uuid")
-        .eq("uuid", user.id)
-        .maybeSingle();
-
-      setIsSupervisor(!!data);
-    } else {
-      setIsSupervisor(false);
-    }
-
+        setIsSupervisor(!!data);
+      } else {
+        setIsSupervisor(false);
+      }
     };
 
     checkUser();
 
-    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-      setIsLoggedIn(!!session?.user);
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setIsLoggedIn(!!session?.user);
 
-      if (session?.user) {
-        supabase
-          .from("supervisor_id")
-          .select("uuid")
-          .eq("uuid", session.user.id)
-          .maybeSingle()
-          .then(({ data }) => setIsSupervisor(!!data));
-      } else {
-        setIsSupervisor(false);
+        if (session?.user) {
+          supabase
+            .from("supervisor_id")
+            .select("uuid")
+            .eq("uuid", session.user.id)
+            .maybeSingle()
+            .then(({ data }) => setIsSupervisor(!!data));
+        } else {
+          setIsSupervisor(false);
+        }
       }
-    });
+    );
 
     return () => {
       authListener.subscription.unsubscribe();
@@ -78,8 +81,8 @@ export default function Navigation() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const toggleMobileMenu = (menuName: string) => {
@@ -111,17 +114,17 @@ export default function Navigation() {
       subItems: [
         { name: "Who We Are", href: "/about/who-we-are" },
         { name: "Notice", href: "/about/notice" },
-        { name: "Executive Team", href: "/about/executive-team" }
-      ]
+        { name: "Executive Team", href: "/about/executive-team" },
+      ],
     },
     {
       name: "Studies",
       href: "/studies/records",
       subItems: [
         { name: "Overview", href: "/studies/overview" },
-        { name: "Study Records", href: "/studies/records" },
+        { name: "Study Records***", href: "/studies/records" },
         { name: "Schedule", href: "/studies/schedule" },
-      ]
+      ],
     },
     {
       name: "Projects",
@@ -129,29 +132,25 @@ export default function Navigation() {
       subItems: [
         { name: "Overview", href: "/projects/overview" },
         { name: "Project Archives", href: "/projects/archives" },
-      ]
+      ],
     },
     {
       name: "Events",
       href: "/events/archive",
-      subItems: [
-        { name: "Event Archive", href: "/events/archive" }
-      ]
+      subItems: [{ name: "Event Archive", href: "/events/archive" }],
     },
     {
       name: "Blog",
       href: "/blog/members-tech-blog",
       subItems: [
         { name: "Members' Tech Blog", href: "/blog/members-tech-blog" },
-        { name: "OAZ Band", href: "/blog/band" }
-      ]
+        { name: "OAZ Band", href: "/blog/band" },
+      ],
     },
     {
       name: "Recruit",
       href: "/recruit/recruitment",
-      subItems: [
-        { name: "Recruitment", href: "/recruit/recruitment" },
-      ]
+      subItems: [{ name: "Recruitment", href: "/recruit/recruitment" }],
     },
     {
       name: "Alumni",
@@ -161,16 +160,17 @@ export default function Navigation() {
         { name: "Alumni News", href: "/alumni/news" },
         { name: "Condolences", href: "/alumni/events" },
         { name: "Former Executives", href: "/alumni/former-execs" },
-      ]
-    }
+      ],
+    },
   ];
 
   return (
     <motion.header
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled
-          ? 'bg-white/80 backdrop-blur-xl border-b border-gray-200/50'
-          : 'bg-transparent'
-        }`}
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-white/80 backdrop-blur-xl border-b border-gray-200/50"
+          : "bg-transparent"
+      }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
@@ -187,7 +187,9 @@ export default function Navigation() {
               <div className="w-8 h-8 bg-black rounded-md flex items-center justify-center">
                 <div className="w-4 h-4 bg-white rounded-sm" />
               </div>
-              <span className="text-xl font-bold tracking-tight text-gray-900">OaZ</span>
+              <span className="text-xl font-bold tracking-tight text-gray-900">
+                OaZ
+              </span>
             </Link>
           </motion.div>
 
@@ -200,7 +202,10 @@ export default function Navigation() {
                 onMouseEnter={() => handleMouseEnter(item.name)}
                 onMouseLeave={handleMouseLeave}
               >
-                <Link href={item.href} className="text-gray-600 hover:text-gray-900 font-medium transition-colors duration-200 relative">
+                <Link
+                  href={item.href}
+                  className="text-gray-600 hover:text-gray-900 font-medium transition-colors duration-200 relative"
+                >
                   <motion.div
                     whileHover={{ y: -1 }}
                     initial={{ opacity: 0, y: 20 }}
@@ -213,45 +218,59 @@ export default function Navigation() {
                 {/* 조건부 렌더링*/}
                 {item.subItems && hoveredMenu === item.name && (
                   <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50">
-                    {item.subItems.map((subItem) => 
-                     subItem.name === "Overview" ? null :(
-                      <Link
-                        key={subItem.name}
-                        href={subItem.href}
-                        className="block px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-                      >
-                        {subItem.name}
-                      </Link>
-                    ))}
+                    {item.subItems.map((subItem) =>
+                      subItem.name === "Overview" ? null : (
+                        <Link
+                          key={subItem.name}
+                          href={subItem.href}
+                          className="block px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                        >
+                          {subItem.name}
+                        </Link>
+                      )
+                    )}
                   </div>
                 )}
               </div>
             ))}
           </nav>
 
-
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
             <Link href="/signin">
-              <Button variant="ghost" className="flex items-center hover:bg-gray-100 text-black px-3 py-2 rounded-md">
+              <Button
+                variant="ghost"
+                className="flex items-center hover:bg-gray-100 text-black px-3 py-2 rounded-md"
+              >
                 <Github className="w-5 h-5" />
                 <span>Sign in</span>
               </Button>
             </Link>
 
             {isLoggedIn ? (
-              <Button onClick={handleLogout} variant="ghost" className="bg-black hover:bg-gray-800 text-white">
+              <Button
+                onClick={handleLogout}
+                variant="ghost"
+                className="bg-black hover:bg-gray-800 text-white"
+              >
                 Log out
               </Button>
             ) : (
-              <Button onClick={handleGithubLogin} variant="ghost" className="bg-black hover:bg-gray-800 text-white">
+              <Button
+                onClick={handleGithubLogin}
+                variant="ghost"
+                className="bg-black hover:bg-gray-800 text-white"
+              >
                 Log in
               </Button>
             )}
 
             {isSupervisor && (
               <Link href="/editor">
-                <Button variant="ghost" className="bg-black hover:bg-gray-800 text-white">
+                <Button
+                  variant="ghost"
+                  className="bg-black hover:bg-gray-800 text-white"
+                >
                   Editor
                 </Button>
               </Link>
@@ -265,7 +284,11 @@ export default function Navigation() {
             className="md:hidden"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {isMobileMenuOpen ? (
+              <X className="w-5 h-5" />
+            ) : (
+              <Menu className="w-5 h-5" />
+            )}
           </Button>
         </div>
       </div>
@@ -299,15 +322,16 @@ export default function Navigation() {
                           className="overflow-hidden ml-4 mt-1 space-y-2"
                         >
                           {item.subItems.map((subItem) =>
-                           subItem.name === "Overview" ? null : (
-                            <Link
-                              key={subItem.name}
-                              href={subItem.href}
-                              className="block text-gray-500 hover:text-gray-800 text-sm"
-                            >
-                              {subItem.name}
-                            </Link>
-                          ))}
+                            subItem.name === "Overview" ? null : (
+                              <Link
+                                key={subItem.name}
+                                href={subItem.href}
+                                className="block text-gray-500 hover:text-gray-800 text-sm"
+                              >
+                                {subItem.name}
+                              </Link>
+                            )
+                          )}
                         </motion.div>
                       )}
                     </AnimatePresence>
